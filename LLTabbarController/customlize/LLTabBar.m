@@ -476,6 +476,18 @@
     // 4. 赋值
     self.titleEdgeInsets = labelEdgeInsets;
     self.imageEdgeInsets = imageEdgeInsets;
+    
+    if (CGRectGetMaxY(self.titleLabel.frame) > CGRectGetHeight(self.frame)) {
+        CGFloat offset_v = CGRectGetMaxY(self.titleLabel.frame) - CGRectGetHeight(self.frame);
+        offset_v*=2;
+        if (style == ButtonStyleImageTopTitleBottom) {
+            labelEdgeInsets.bottom += offset_v;
+            self.titleEdgeInsets = labelEdgeInsets;
+
+            imageEdgeInsets.top -= offset_v;
+            self.imageEdgeInsets = imageEdgeInsets;
+        }
+    }
 }
 
 - (void)setPersistWhenZero:(BOOL)persistWhenZero {
