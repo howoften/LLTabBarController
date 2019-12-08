@@ -209,24 +209,6 @@
     [self resetTitleTextApperance];
 }
 
-- (void)moveItemAtIndex:(NSUInteger)index offsetVertical:(CGFloat)offsetVertical {
-    [self.offsetDic setObject:@(offsetVertical) forKey:@(index)];
-    
-    [self moveItemsIfNeeded];
-}
-
-- (void)moveItemsIfNeeded {
-    [[self.offsetDic copy] enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
-        NSUInteger index = [key unsignedIntegerValue];
-        if (index < _tabBarItems.count && index >= 0) {
-            UIButton *item = _tabBarItems[index];
-            item.center = CGPointMake(item.center.x, item.center.y+[obj floatValue]);
-            [self.offsetDic removeObjectForKey:key];
-        }
-    }];
-    
-}
-
 - (void)layoutTabBarItems:(NSArray *)tabBarItemsArray {
     [self removeSubItems];
     CGFloat itemWidth = 0.f;
@@ -261,7 +243,6 @@
     }
     _lastSelectedItem = self.tabBarItems.firstObject;
     _lastSelectedItem.selected = YES;
-    [self moveItemsIfNeeded];
 }
 
 - (void)setTabBarItemsImage {

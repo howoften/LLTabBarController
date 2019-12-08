@@ -76,12 +76,6 @@
     return self.selectedViewController.preferredStatusBarStyle;
 }
 
-- (void)adjustItemOffsetVerticalAtIndex:(NSUInteger)index offset:(CGFloat)offset
-{
-    [self.tabBar.contentTabBar moveItemAtIndex:index offsetVertical:offset];
-}
-
-
 #pragma mark - LLTabBarDelegate
 - (void)tabBar:(LLTabBar *)tabBar didSelectItemAtIndex:(NSInteger)index {
     [self setSelectedIndex:index];

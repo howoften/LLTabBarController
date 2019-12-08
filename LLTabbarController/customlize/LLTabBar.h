@@ -34,8 +34,7 @@
 
 @property (nonatomic, weak)id<LLTabBarDelegate> delegete;
 - (void)setTextAttributes:(NSDictionary *)attributes state:(UIControlState)state;
-//- (void)addChildItemWithTitle:(NSString *)title image:(NSString *)image selectedImage:(NSString *)selectedImage;
-- (void)moveItemAtIndex:(NSUInteger)index offsetVertical:(CGFloat)offsetVertical;
+
 - (void)setItemBadgeValue:(NSUInteger)value atIndex:(NSUInteger)index;
 - (void)moveItemBadgeAtIndex:(NSUInteger)index offset:(UIOffset)offset;
 - (void)setItemPersistWhenBadgeValueZero:(BOOL)isPersist atIndex:(NSUInteger)index;

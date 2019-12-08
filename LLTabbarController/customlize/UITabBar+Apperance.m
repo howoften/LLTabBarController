@@ -78,21 +78,6 @@
     return [objc_getAssociatedObject(self, @selector(tabBarHeight)) floatValue];
 }
 
-
-- (void)adjustItemOffsetVerticalAtIndex:(NSUInteger)index offset:(CGFloat)offset
-{
-    [self.contentTabBar moveItemAtIndex:index offsetVertical:offset];
-}
-
-//- (void)setTabBarOffset:(CGFloat)tabBarOffset {
-//    objc_setAssociatedObject(self, @selector(tabBarOffset), @(tabBarOffset), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-//    self.contentTabBar.offset = tabBarOffset;
-//
-//}
-//- (CGFloat)tabBarOffset {
-//    return [objc_getAssociatedObject(self, @selector(tabBarOffset)) floatValue];
-//}
-
 - (void)setShowTabBarShadow:(BOOL)showTabBarShadow {
     objc_setAssociatedObject(self, @selector(showTabBarShadow), @(showTabBarShadow), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     self.contentTabBar.isShowTabbarShadow = showTabBarShadow;

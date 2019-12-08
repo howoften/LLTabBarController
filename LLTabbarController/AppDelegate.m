@@ -23,7 +23,6 @@
     [(LLTabBarController *)self.window.rootViewController tabBar].tabBarItemsImageArray = @[@"tab_home01", @"bofang", @"tab_mine_01"];
     [(LLTabBarController *)self.window.rootViewController tabBar].tabBarItemsImageSelectedArray = @[@"tab_home", @"bofang", @"tab_mine"];
     
-//    [[(LLTabBarController *)self.window.rootViewController tabBar] adjustItemOffsetVerticalAtIndex:1 offset:-20];
     [[(LLTabBarController *)self.window.rootViewController tabBar] setTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]} state:UIControlStateSelected];
     
     

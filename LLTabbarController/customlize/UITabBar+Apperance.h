@@ -21,7 +21,6 @@
 @property (nonatomic, strong)UIBezierPath *separatorPath;
 @property (nonatomic, weak)id<LLTabBarDelegate> tabBarDelegate;
 
-- (void)adjustItemOffsetVerticalAtIndex:(NSUInteger)index offset:(CGFloat)offset;
 - (void)setTextAttributes:(NSDictionary *)attributes state:(UIControlState)state;
 - (void)setItemBadgeValue:(NSUInteger)value atIndex:(NSUInteger)index;
 - (void)moveItemBadgeAtIndex:(NSUInteger)index offset:(UIOffset)offset;
