@@ -76,16 +76,9 @@
 		2D16D80D239A310500181484 /* LLTabbarController */ = {
 			isa = PBXGroup;
 			children = (
+				2D16D841239CC7C600181484 /* customlize */,
 				2D16D80E239A310500181484 /* AppDelegate.h */,
 				2D16D80F239A310500181484 /* AppDelegate.m */,
-				2D16D829239A316C00181484 /* LLTabBar.h */,
-				2D16D82A239A316C00181484 /* LLTabBar.m */,
-				2D16D828239A316C00181484 /* UITabBar+BeyondClick.h */,
-				2D16D82C239A316C00181484 /* UITabBar+BeyondClick.m */,
-				2D16D830239A33FB00181484 /* UITabBar+Apperance.h */,
-				2D16D831239A33FB00181484 /* UITabBar+Apperance.m */,
-				2D16D82B239A316C00181484 /* LLTabBarController.h */,
-				2D16D827239A316C00181484 /* LLTabBarController.m */,
 				2D16D814239A310500181484 /* ViewController.h */,
 				2D16D815239A310500181484 /* ViewController.m */,
 				2D16D839239A3A2F00181484 /* SViewController.h */,
@@ -99,6 +92,21 @@
 				2D16D820239A310700181484 /* main.m */,
 			);
 			path = LLTabbarController;
+			sourceTree = "<group>";
+		};
+		2D16D841239CC7C600181484 /* customlize */ = {
+			isa = PBXGroup;
+			children = (
+				2D16D829239A316C00181484 /* LLTabBar.h */,
+				2D16D82A239A316C00181484 /* LLTabBar.m */,
+				2D16D828239A316C00181484 /* UITabBar+BeyondClick.h */,
+				2D16D82C239A316C00181484 /* UITabBar+BeyondClick.m */,
+				2D16D830239A33FB00181484 /* UITabBar+Apperance.h */,
+				2D16D831239A33FB00181484 /* UITabBar+Apperance.m */,
+				2D16D82B239A316C00181484 /* LLTabBarController.h */,
+				2D16D827239A316C00181484 /* LLTabBarController.m */,
+			);
+			path = customlize;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
