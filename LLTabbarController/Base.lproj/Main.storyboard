@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Rd9-uB-Sq6">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -97,14 +98,28 @@
                     <view key="view" contentMode="scaleToFill" id="zFc-1J-Wvp">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ULs-Az-m4o">
+                                <rect key="frame" x="206.5" y="20" width="1" height="856"/>
+                                <color key="backgroundColor" systemColor="systemPinkColor" red="1" green="0.1764705882" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="1" id="IE2-oe-oZd"/>
+                                </constraints>
+                            </view>
+                        </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="ULs-Az-m4o" firstAttribute="top" secondItem="zFc-1J-Wvp" secondAttribute="top" constant="20" symbolic="YES" id="IbO-zT-nBz"/>
+                            <constraint firstAttribute="bottom" secondItem="ULs-Az-m4o" secondAttribute="bottom" constant="20" symbolic="YES" id="dR2-Ks-gru"/>
+                            <constraint firstItem="ULs-Az-m4o" firstAttribute="centerX" secondItem="zFc-1J-Wvp" secondAttribute="centerX" id="xbz-23-0He"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="jtx-7S-brG"/>
                     </view>
                     <navigationItem key="navigationItem" id="eu7-20-6ot"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RFq-7q-jjC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2902.898550724638" y="1485.9375"/>
+            <point key="canvasLocation" x="1977" y="1486"/>
         </scene>
         <!--Item-->
         <scene sceneID="d5R-ID-aXG">
@@ -150,6 +165,7 @@
                 <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="Rd9-uB-Sq6" customClass="LLTabBarController" sceneMemberID="viewController">
                     <toolbarItems/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Aw9-PC-fyf">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
@@ -161,7 +177,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tHY-kn-5vq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="137.68115942028987" y="109.82142857142857"/>
+            <point key="canvasLocation" x="-233" y="988"/>
         </scene>
         <!--Item-->
         <scene sceneID="BJ5-TW-9r9">
@@ -180,7 +196,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ECI-T8-u7p" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1992.753623188406" y="1485.9375"/>
+            <point key="canvasLocation" x="1048" y="1486"/>
         </scene>
     </scenes>
     <resources>

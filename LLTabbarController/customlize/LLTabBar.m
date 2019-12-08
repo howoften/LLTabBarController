@@ -11,8 +11,8 @@
 #import "LLTabBar.h"
 #define ScreenWidth [UIScreen mainScreen].bounds.size.width
 #define ScreenHeight [UIScreen mainScreen].bounds.size.height
-#define MaxItemNum 5
-#define ContentEdgeLeft 2
+//#define MaxItemNum 5
+//#define ContentEdgeLeft 2
 #define ItemSpacing 2
 #define ImageTitleSpacing 2
 @interface LLTabBar ()
@@ -178,7 +178,6 @@
     }else {
         [super setBackgroundColor:[UIColor clearColor]];
         self.bgImageView.backgroundColor = backgroundColor;
-        [self wantToClearSuperView];
         [_backMaskView removeFromSuperview];
     }
     
@@ -187,7 +186,6 @@
 - (void)setBackgroundImage:(UIImage *)backgroundImage {
     _backgroundImage = backgroundImage;
     self.bgImageView.image = backgroundImage;
-    [self wantToClearSuperView];
     
     [_backMaskView removeFromSuperview];
 }
@@ -229,181 +227,42 @@
     
 }
 
-//- (void)addChildItemWithTitle:(NSString *)title image:(NSString *)image selectedImage:(NSString *)selectedImage {
-//    if (title.length < 1 && image.length < 1) {
-//        return;
-//    }
-//    NSMutableArray *titles, *images, *selectedImages;
-//    if (!_tabBarItemTitlesArray) {
-//        _tabBarItemTitlesArray = [NSArray array];
-//    }
-//    if (!_tabBarItemsImageArray) {
-//        _tabBarItemsImageArray = [NSArray array];
-//    }
-//    if (!_tabBarItemsImageSelectedArray) {
-//        _tabBarItemsImageSelectedArray = [NSArray array];
-//    }
-//    if (title.length < 1) {
-//        title = @"";
-//    }
-//    if (image.length < 1) {
-//        image = @"";
-//    }
-//    if (selectedImage.length < 1) {
-//        selectedImage = @"";
-//    }
-//
-//    titles =[_tabBarItemTitlesArray mutableCopy];
-//    images = [_tabBarItemsImageArray mutableCopy];
-//    selectedImages = [_tabBarItemsImageSelectedArray mutableCopy];
-//
-//    [titles addObject:title];
-//    [images addObject:image];
-//    [selectedImages addObject:selectedImage];
-//    _tabBarItemTitlesArray = [titles copy];
-//    _tabBarItemsImageArray = [images copy];
-//    _tabBarItemsImageSelectedArray = [selectedImages copy];
-//
-//    [self addItem];
-//}
-
 - (void)layoutTabBarItems:(NSArray *)tabBarItemsArray {
     [self removeSubItems];
     CGFloat itemWidth = 0.f;
-    //    NSMutableArray *itemsArray = [NSMutableArray arrayWithCapacity:0];
-    if (tabBarItemsArray.count > MaxItemNum) {
-        itemWidth = (ScreenWidth - ContentEdgeLeft*2 - 4*ItemSpacing) / 5.f;
-        _isBeyondLimit = YES;
-    }else {
-        itemWidth = (ScreenWidth - ContentEdgeLeft*2 - (tabBarItemsArray.count-1)*ItemSpacing) / tabBarItemsArray.count;
-        _isBeyondLimit = NO;
-    }
+    itemWidth = (ScreenWidth) / MIN(5, tabBarItemsArray.count);
     
-    if (_isBeyondLimit) {
-        [self sendBeyondMessage];
-        for (int i = 0; i < MaxItemNum; i++) {
-            
-            UIButton *tabBarButton = [UIButton buttonWithType:UIButtonTypeCustom];
-            tabBarButton.adjustsImageWhenHighlighted = NO;
-            [tabBarButton.imageView setContentMode:UIViewContentModeScaleAspectFit];
-            [tabBarButton addTarget:self action:@selector(didClicked:) forControlEvents:UIControlEventTouchUpInside];
-            tabBarButton.frame = CGRectMake(ContentEdgeLeft + i*ItemSpacing + i*itemWidth, 0, itemWidth, 49);
-            if (i == 4) {
-                [tabBarButton setAttributedTitle:[[NSAttributedString alloc] initWithString:@"更多" attributes:@{NSFontAttributeName:_font, NSForegroundColorAttributeName:_normalColor}] forState:UIControlStateNormal];
-                [tabBarButton setAttributedTitle:[[NSAttributedString alloc] initWithString:@"更多" attributes:@{NSFontAttributeName:_selectedFont, NSForegroundColorAttributeName:_selectetColor}] forState:UIControlStateSelected];
-                [tabBarButton setImage:[UIImage imageNamed:@"tabbarBtn_more_nomal"] forState:UIControlStateNormal];
-                [tabBarButton setImage:[UIImage imageNamed:@"tabbarBtn_more_selected"] forState:UIControlStateSelected];
-                [self.tabBarItems addObject:tabBarButton];
-                [tabBarButton layoutButtonWithButtonStyle:ButtonStyleImageTopTitleBottom imageTitleSpace:ImageTitleSpacing];
-                [self.contentView addSubview:tabBarButton];
-                continue;
-            }
-            [tabBarButton setAttributedTitle:[[NSAttributedString alloc] initWithString:tabBarItemsArray[i] attributes:@{NSFontAttributeName:_font, NSForegroundColorAttributeName:_normalColor}] forState:UIControlStateNormal];
-            [tabBarButton setAttributedTitle:[[NSAttributedString alloc] initWithString:tabBarItemsArray[i] attributes:@{NSFontAttributeName:_selectedFont, NSForegroundColorAttributeName:_selectetColor}] forState:UIControlStateSelected];
-            
-            if (self.tabBarItemsImageArray.count > 0 && i < self.tabBarItemsImageArray.count && [self.tabBarItemsImageArray[i] length] > 0) {
-                [tabBarButton setImage:[UIImage imageNamed:self.tabBarItemsImageArray[i]] forState:UIControlStateNormal];
-            }
-            if (self.tabBarItemsImageSelectedArray.count > 0 && i < self.tabBarItemsImageSelectedArray.count && [self.tabBarItemsImageSelectedArray[i] length] > 0) {
-                [tabBarButton setImage:[UIImage imageNamed:self.tabBarItemsImageSelectedArray[i]] forState:UIControlStateSelected];
-            }
-            [tabBarButton layoutButtonWithButtonStyle:ButtonStyleImageTopTitleBottom imageTitleSpace:ImageTitleSpacing];
-            [self.tabBarItems addObject:tabBarButton];
-            
-            [self.contentView addSubview:tabBarButton];
-            
+//    __kindof UIView *secondItem = self.contentView;
+    for (int i = 0; i < tabBarItemsArray.count && i < 5; i++) {
+        UIButton *tabBarButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        tabBarButton.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.contentView addSubview:tabBarButton];
+        [tabBarButton addTarget:self action:@selector(didClicked:) forControlEvents:UIControlEventTouchUpInside];
+        tabBarButton.adjustsImageWhenHighlighted = NO;
+//        [tabBarButton.imageView setContentMode:UIViewContentModeScaleAspectFit];
+        [tabBarButton.bottomAnchor constraintEqualToAnchor:self.contentView.bottomAnchor].active = YES;
+        [tabBarButton.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor constant:itemWidth*i].active = YES;
+        [tabBarButton.widthAnchor constraintEqualToConstant:itemWidth].active = YES;
+        [tabBarButton.heightAnchor constraintGreaterThanOrEqualToConstant:49].active = YES;
+        
+//        tabBarButton.frame = CGRectMake(ContentEdgeLeft + i*ItemSpacing + i*itemWidth, 0, itemWidth, 49);
+        [tabBarButton setAttributedTitle:[[NSAttributedString alloc] initWithString:tabBarItemsArray[i] attributes:@{NSFontAttributeName:_font, NSForegroundColorAttributeName:_normalColor}] forState:UIControlStateNormal];
+        [tabBarButton setAttributedTitle:[[NSAttributedString alloc] initWithString:tabBarItemsArray[i] attributes:@{NSFontAttributeName:_selectedFont, NSForegroundColorAttributeName:_selectetColor}] forState:UIControlStateSelected];
+        
+        if (self.tabBarItemsImageArray.count > 0 && i < self.tabBarItemsImageArray.count && [self.tabBarItemsImageArray[i] length] > 0) {
+            [tabBarButton setImage:[UIImage imageNamed:self.tabBarItemsImageArray[i]] forState:UIControlStateNormal];
         }
-    }else {
-        for (int i = 0; i < tabBarItemsArray.count; i++) {
-            UIButton *tabBarButton = [UIButton buttonWithType:UIButtonTypeCustom];
-            [tabBarButton addTarget:self action:@selector(didClicked:) forControlEvents:UIControlEventTouchUpInside];
-            tabBarButton.adjustsImageWhenHighlighted = NO;
-            [tabBarButton.imageView setContentMode:UIViewContentModeScaleAspectFit];
-            tabBarButton.frame = CGRectMake(ContentEdgeLeft + i*ItemSpacing + i*itemWidth, 0, itemWidth, 49);
-            [tabBarButton setAttributedTitle:[[NSAttributedString alloc] initWithString:tabBarItemsArray[i] attributes:@{NSFontAttributeName:_font, NSForegroundColorAttributeName:_normalColor}] forState:UIControlStateNormal];
-            [tabBarButton setAttributedTitle:[[NSAttributedString alloc] initWithString:tabBarItemsArray[i] attributes:@{NSFontAttributeName:_selectedFont, NSForegroundColorAttributeName:_selectetColor}] forState:UIControlStateSelected];
-            
-            if (self.tabBarItemsImageArray.count > 0 && i < self.tabBarItemsImageArray.count && [self.tabBarItemsImageArray[i] length] > 0) {
-                [tabBarButton setImage:[UIImage imageNamed:self.tabBarItemsImageArray[i]] forState:UIControlStateNormal];
-            }
-            if (self.tabBarItemsImageSelectedArray.count > 0 && i < self.tabBarItemsImageSelectedArray.count && [self.tabBarItemsImageSelectedArray[i] length] > 0) {
-                [tabBarButton setImage:[UIImage imageNamed:self.tabBarItemsImageSelectedArray[i]] forState:UIControlStateSelected];
-            }
-            [tabBarButton layoutButtonWithButtonStyle:ButtonStyleImageTopTitleBottom imageTitleSpace:ImageTitleSpacing];
-            [self.tabBarItems addObject:tabBarButton];
-            [self.contentView addSubview:tabBarButton];
-            
+        if (self.tabBarItemsImageSelectedArray.count > 0 && i < self.tabBarItemsImageSelectedArray.count && [self.tabBarItemsImageSelectedArray[i] length] > 0) {
+            [tabBarButton setImage:[UIImage imageNamed:self.tabBarItemsImageSelectedArray[i]] forState:UIControlStateSelected];
         }
+        [tabBarButton layoutButtonWithButtonStyle:ButtonStyleImageTopTitleBottom imageTitleSpace:ImageTitleSpacing];
+        [self.tabBarItems addObject:tabBarButton];
+//        secondItem = tabBarButton;
     }
     _lastSelectedItem = self.tabBarItems.firstObject;
     _lastSelectedItem.selected = YES;
     [self moveItemsIfNeeded];
 }
-
-- (void)addItem {
-    if (_tabBarItemTitlesArray.count > MaxItemNum + 1) {
-        return;
-    }
-    
-    CGFloat itemWidth = 0.f;
-    if (_tabBarItemTitlesArray.count > MaxItemNum) {
-        itemWidth = (ScreenWidth - ContentEdgeLeft*2 - 4*ItemSpacing) / 5.f;
-        _isBeyondLimit = YES;
-    }else {
-        itemWidth = (ScreenWidth - ContentEdgeLeft*2 - (_tabBarItemTitlesArray.count-1)*ItemSpacing) / _tabBarItemTitlesArray.count;
-        _isBeyondLimit = NO;
-    }
-    if (_tabBarItemTitlesArray.count == MaxItemNum + 1) {
-        UIButton *lastItem = self.tabBarItems.lastObject;
-        [lastItem setAttributedTitle:[[NSAttributedString alloc] initWithString:@"更多" attributes:@{NSFontAttributeName:_font, NSForegroundColorAttributeName:_normalColor}] forState:UIControlStateNormal];
-        [lastItem setAttributedTitle:[[NSAttributedString alloc] initWithString:@"更多" attributes:@{NSFontAttributeName:_selectedFont, NSForegroundColorAttributeName:_selectetColor}] forState:UIControlStateSelected];
-        [lastItem setImage:[UIImage imageNamed:@"tabbarBtn_more_nomal"] forState:UIControlStateNormal];
-        [lastItem setImage:[UIImage imageNamed:@"tabbarBtn_more_selected"] forState:UIControlStateSelected];
-        [lastItem layoutButtonWithButtonStyle:ButtonStyleImageTopTitleBottom imageTitleSpace:ImageTitleSpacing];
-        return;
-    }
-    for (int i = 0; i < _tabBarItemTitlesArray.count-1; i++) {
-        UIButton *item = self.tabBarItems[i];
-        item.frame = CGRectMake(ContentEdgeLeft + i*ItemSpacing + i*itemWidth, 0, itemWidth, CGRectGetHeight(self.contentView.frame));
-    }
-    
-    for (int j = (int)_tabBarItemTitlesArray.count-1; j < (int)[_tabBarItemTitlesArray count]; j++) {
-        UIButton *tabBarButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [tabBarButton addTarget:self action:@selector(didClicked:) forControlEvents:UIControlEventTouchUpInside];
-        tabBarButton.adjustsImageWhenHighlighted = NO;
-        [tabBarButton.imageView setContentMode:UIViewContentModeScaleAspectFit];
-        tabBarButton.frame = CGRectMake(ContentEdgeLeft + j*ItemSpacing + j*itemWidth, 0, itemWidth, CGRectGetHeight(self.contentView.frame));
-        [tabBarButton setAttributedTitle:[[NSAttributedString alloc] initWithString:_tabBarItemTitlesArray[j] attributes:@{NSFontAttributeName:_font, NSForegroundColorAttributeName:_normalColor}] forState:UIControlStateNormal];
-        [tabBarButton setAttributedTitle:[[NSAttributedString alloc] initWithString:_tabBarItemTitlesArray[j] attributes:@{NSFontAttributeName:_selectedFont, NSForegroundColorAttributeName:_selectetColor}] forState:UIControlStateSelected];
-        
-        if (self.tabBarItemsImageArray.count > 0 && j < self.tabBarItemsImageArray.count && [self.tabBarItemsImageArray[j] length] > 0) {
-            [tabBarButton setImage:[UIImage imageNamed:self.tabBarItemsImageArray[j]] forState:UIControlStateNormal];
-        }
-        if (self.tabBarItemsImageSelectedArray.count > 0 && j < self.tabBarItemsImageSelectedArray.count && [self.tabBarItemsImageSelectedArray[j] length] > 0) {
-            [tabBarButton setImage:[UIImage imageNamed:self.tabBarItemsImageSelectedArray[j]] forState:UIControlStateSelected];
-        }
-        [self.contentView addSubview:tabBarButton];
-        [tabBarButton layoutButtonWithButtonStyle:ButtonStyleImageTopTitleBottom imageTitleSpace:ImageTitleSpacing];
-        [self.tabBarItems addObject:tabBarButton];
-        
-        if (_tabBarItemTitlesArray.count == 1) {
-            tabBarButton.selected = YES;
-            _lastSelectedItem = tabBarButton;
-        }
-        
-    }
-    [self moveItemsIfNeeded];
-}
-
-//- (void)adjustFrame {
-//    if (_bgImageView) {
-//        self.bgImageView.frame = CGRectMake(0, self.bgImageView.frame.origin.y+_offset, self.bgImageView.frame.size.width, self.bgImageView.frame.size.height);
-//    }
-//
-//    if (_contentView) {
-//        self.contentView.frame = CGRectMake(0, self.contentView.frame.origin.y+_offset, self.contentView.frame.size.width, self.contentView.frame.size.height);
-//    }
-//}
 
 - (void)setTabBarItemsImage {
     for (UIButton *item in _tabBarItems) {
@@ -436,7 +295,6 @@
 }
 
 - (void)didClicked:(UIButton *)sender {
-    
     BOOL enabled = YES;
     NSInteger selectedIndex = [_tabBarItems indexOfObject:sender];
     if ([self.delegete respondsToSelector:@selector(tabBar:shouldSelectItemAtIndex:)]) {
@@ -450,37 +308,10 @@
             _lastSelectedItem = sender;
             _lastSelectedItem.selected = YES;
             [self.delegete tabBar:self didSelectItemAtIndex:selectedIndex];
-            if ([sender.titleLabel.text isEqualToString:@"更多"] && selectedIndex == 4 && _tabBarItemTitlesArray.count > 5) {
-                [self clickMoreTabBarButton];
-            }
         }
         
     }
 }
-///////////////////////触发代理
-- (void)clickMoreTabBarButton {
-    if ([self.delegete respondsToSelector:@selector(gotoExtraViewControllers)]) {
-        [self.delegete gotoExtraViewControllers];
-    }
-}
-
-- (void)wantToClearSuperView {
-    if ([self.delegete respondsToSelector:@selector(isSetBarBackgroundColorOrImage)]) {
-        [self.delegete isSetBarBackgroundColorOrImage];
-    }
-}
-
-- (void)sendBeyondMessage {
-    if ([self.delegete respondsToSelector:@selector(beyondMaxItemsNumLimit:)]) {
-        NSMutableArray *array = [NSMutableArray arrayWithCapacity:0];
-        for (int i = 4; i < self.tabBarItemTitlesArray.count; i++) {
-            [array addObject:self.tabBarItemTitlesArray[i]];
-        }
-        [self.delegete beyondMaxItemsNumLimit:[array copy]];
-    }
-}
-
-
 
 - (void)removeSubItems {
     for (UIView *subview in self.contentView.subviews) {

@@ -14,9 +14,9 @@
 - (void)tabBar:(LLTabBar *)tabBar didSelectItemAtIndex:(NSInteger)index;
 @optional
 - (BOOL)tabBar:(LLTabBar *)tabBar shouldSelectItemAtIndex:(NSInteger)index;
-- (void)gotoExtraViewControllers;
-- (void)isSetBarBackgroundColorOrImage;
-- (void)beyondMaxItemsNumLimit:(NSArray<NSString *> *)beyondItemsTitle;
+//- (void)gotoExtraViewControllers;
+//- (void)isSetBarBackgroundColorOrImage;
+//- (void)beyondMaxItemsNumLimit:(NSArray<NSString *> *)beyondItemsTitle;
 @end
 
 @interface LLTabBar : UIView

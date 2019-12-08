@@ -157,7 +157,6 @@
         }
     }
     [self config];
-    self.hidden = NO;
     [self bringSubviewToFront:self.contentTabBar];
     
 }
