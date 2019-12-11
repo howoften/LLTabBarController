@@ -23,7 +23,6 @@
     self.imageview.image = [UIImage imageNamed:@"tab_home01"];
     [self.btn setImage:[UIImage imageNamed:@"tab_home01"] forState:UIControlStateNormal];
     
-    
 }
 
 - (IBAction)action:(id)sender {

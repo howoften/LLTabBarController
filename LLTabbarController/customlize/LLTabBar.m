@@ -30,6 +30,22 @@
 @property (nonatomic, strong)CAShapeLayer *separateLine;
 
 @end
+#pragma mark -- UIButton (LayoutItem)
+@interface UIButton ()
+@property (nonatomic, strong)UILabel *badgeLabel;
+@property (nonatomic, strong)UILabel *boringBadge;
+
+@property (nonatomic, strong)NSLayoutConstraint *widthConstraint;
+@property (nonatomic, strong)NSLayoutConstraint *leadingConstraint;
+
+@property (nonatomic, strong)NSLayoutConstraint *badgeLabel_width;
+
+@end
+
+NSString * const LLTabBarItemTitleNormalKey = @"LLTabBarItemTitleNormalKey";
+NSString * const LLTabBarItemTitleSelectKey = @"LLTabBarItemTitleSelectKey";
+NSString * const LLTabBarItemImageNormalKey = @"LLTabBarItemImageNormalKey";
+NSString * const LLTabBarItemImageSelectKey = @"LLTabBarItemImageSelectKey";
 @implementation LLTabBar///007aff
 - (instancetype)init {
     self = [super init];
@@ -77,8 +93,8 @@
     _selectedFont = [UIFont systemFontOfSize:10];
     _normalColor = [UIColor grayColor];
     _selectetColor = [UIColor colorWithRed:0 green:122/255.0 blue:255/255.0 alpha:1];
-    _isBeyondLimit = NO;
-    _offset = 0;
+//    _isBeyondLimit = NO;
+//    _offset = 0;
     [self contentView];
     [self sendSubviewToBack:self.backMaskView];
 }
@@ -135,35 +151,29 @@
     }
 }
 
-- (void)setOffset:(CGFloat)offset {
-    _offset = offset;
-//    [self adjustFrame];
-}
+//- (void)setOffset:(CGFloat)offset {
+//    _offset = offset;
+////    [self adjustFrame];
+//}
 
-- (void)setTabBarItemTitlesArray:(NSArray<NSString *> *)tabBarItemTitlesArray {
-    if (!_tabBarItemTitlesArray) {
-        _tabBarItemTitlesArray = tabBarItemTitlesArray;
-    }else if (_tabBarItemTitlesArray.count > tabBarItemTitlesArray.count) {
-        NSMutableArray *temp = [_tabBarItemTitlesArray mutableCopy];
-        [temp replaceObjectsInRange:NSMakeRange(0, tabBarItemTitlesArray.count) withObjectsFromArray:tabBarItemTitlesArray];
-        _tabBarItemTitlesArray = [temp copy];
-    }else {
-        NSMutableArray *temp = [_tabBarItemTitlesArray mutableCopy];
-        [temp replaceObjectsInRange:NSMakeRange(0, _tabBarItemTitlesArray.count) withObjectsFromArray:tabBarItemTitlesArray range:NSMakeRange(0, _tabBarItemTitlesArray.count)];
-        _tabBarItemTitlesArray = [temp copy];
-    }
-    [self layoutTabBarItems:_tabBarItemTitlesArray];
+- (void)setTabBarItemConfigArray:(NSArray *)tabBarItemConfigArray {
+    NSAssert([tabBarItemConfigArray count] < 6, @"<%@ %p> -setTabBarItemConfigArray: config array count must lessThan 6.", NSStringFromClass(self.class), self);
+
+    [[tabBarItemConfigArray copy] enumerateObjectsUsingBlock:^(NSDictionary *  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSAssert([obj isKindOfClass:[NSDictionary class]], @"<%@ %p> -setTabBarItemConfigArray: object must be dictionary in array.", NSStringFromClass(self.class), self);
+        NSAssert(([[obj objectForKey:LLTabBarItemTitleNormalKey] isKindOfClass:[NSString class]] || [obj objectForKey:LLTabBarItemTitleNormalKey] == nil), @"<%@ %p> -setTabBarItemConfigArray: dictionary in array has invalid key-value pair.", NSStringFromClass(self.class), self);
+        NSAssert(([[obj objectForKey:LLTabBarItemTitleSelectKey] isKindOfClass:[NSString class]] || [obj objectForKey:LLTabBarItemTitleSelectKey] == nil), @"<%@ %p> -setTabBarItemConfigArray: dictionary in array has invalid key-value pair.", NSStringFromClass(self.class), self);
+        NSAssert(([[obj objectForKey:LLTabBarItemImageNormalKey] isKindOfClass:[NSString class]] || [obj objectForKey:LLTabBarItemImageNormalKey] == nil), @"<%@ %p> -setTabBarItemConfigArray: dictionary in array has invalid key-value pair.", NSStringFromClass(self.class), self);
+        NSAssert(([[obj objectForKey:LLTabBarItemImageSelectKey] isKindOfClass:[NSString class]] || [obj objectForKey:LLTabBarItemImageSelectKey] == nil), @"<%@ %p> -setTabBarItemConfigArray: dictionary in array has invalid key-value pair.", NSStringFromClass(self.class), self);
+        
+        BOOL least = ([obj objectForKey:LLTabBarItemTitleNormalKey] == nil && [obj objectForKey:LLTabBarItemTitleSelectKey] == nil && [obj objectForKey:LLTabBarItemImageNormalKey] == nil && [obj objectForKey:LLTabBarItemImageSelectKey] == nil);
+        NSAssert(!least, @"<%@ %p> -setTabBarItemConfigArray: dictionary in array  must have at least one valid key-value pair.", NSStringFromClass(self.class), self);
+
+    }];
+    _tabBarItemConfigArray = tabBarItemConfigArray;
     
-}
-
-- (void)setTabBarItemsImageArray:(NSArray<NSString *> *)tabBarItemsImageArray {
-    _tabBarItemsImageArray = tabBarItemsImageArray;
-    [self setTabBarItemsImage];
-}
-
-- (void)setTabBarItemsImageSelectedArray:(NSArray<NSString *> *)tabBarItemsImageSelectedArray {
-    _tabBarItemsImageSelectedArray = tabBarItemsImageSelectedArray;
-    [self setTabBarItemsSelectedImage];
+    [self updateTabBarItems];
+    [self refreshTabBarItems];
 }
 
 - (void)setLastSelectedItem:(UIButton *)lastSelectedItem {
@@ -206,72 +216,77 @@
             _selectetColor = attributes[NSForegroundColorAttributeName];
         }
     }
-    [self resetTitleTextApperance];
+    [self refreshTabBarItems];
+}
+- (void)updateTabBarItems {
+    if (self.tabBarItems.count > self.tabBarItemConfigArray.count) {
+        NSMutableArray *temp = [self.tabBarItems mutableCopy];
+        CGFloat itemWidth = (ScreenWidth) / MIN(5, self.tabBarItemConfigArray.count);
+        for (int i = 0; i < self.tabBarItemConfigArray.count; i++) {
+            UIButton *previous_item = self.tabBarItems[i];
+            previous_item.leadingConstraint.constant = itemWidth*i;
+            previous_item.widthConstraint.constant = itemWidth;
+        }
+        for (int i = (int)self.tabBarItemConfigArray.count; i < self.tabBarItems.count; i++) {
+            UIButton *remove_item = self.tabBarItems[i];
+            [remove_item removeFromSuperview];
+        }
+        [temp removeObjectsInRange:NSMakeRange(self.tabBarItemConfigArray.count, self.tabBarItems.count - self.tabBarItemConfigArray.count)];
+        self.tabBarItems = [temp copy];
+    }else if (self.tabBarItems.count < self.tabBarItemConfigArray.count) {
+        CGFloat itemWidth = (ScreenWidth) / MIN(5, self.tabBarItemConfigArray.count);
+        NSMutableArray *temp = [self.tabBarItems mutableCopy];
+        for (int i = 0; i < self.tabBarItems.count; i++) {
+            UIButton *previous_item = self.tabBarItems[i];
+            previous_item.leadingConstraint.constant = itemWidth*i;
+            previous_item.widthConstraint.constant = itemWidth;
+        }
+        for (int i = (int)self.tabBarItems.count; i < self.tabBarItemConfigArray.count; i++) {
+            UIButton *tabBarButton = [UIButton buttonWithType:UIButtonTypeCustom];
+            tabBarButton.translatesAutoresizingMaskIntoConstraints = NO;
+            [self.contentView addSubview:tabBarButton];
+            [tabBarButton addTarget:self action:@selector(didClicked:) forControlEvents:UIControlEventTouchUpInside];
+            tabBarButton.adjustsImageWhenHighlighted = NO;
+            [tabBarButton.bottomAnchor constraintEqualToAnchor:self.contentView.bottomAnchor].active = YES;
+            tabBarButton.leadingConstraint = [tabBarButton.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor constant:itemWidth*i];
+            tabBarButton.leadingConstraint.active = YES;
+            tabBarButton.widthConstraint = [tabBarButton.widthAnchor constraintEqualToConstant:itemWidth];
+            tabBarButton.widthConstraint.active = YES;
+            [tabBarButton.heightAnchor constraintGreaterThanOrEqualToConstant:49].active = YES;
+            [temp addObject:tabBarButton];
+            
+        }
+        self.tabBarItems = [temp copy];
+    }
+    
 }
 
-- (void)layoutTabBarItems:(NSArray *)tabBarItemsArray {
-    [self removeSubItems];
-    CGFloat itemWidth = 0.f;
-    itemWidth = (ScreenWidth) / MIN(5, tabBarItemsArray.count);
-    
-//    __kindof UIView *secondItem = self.contentView;
-    for (int i = 0; i < tabBarItemsArray.count && i < 5; i++) {
-        UIButton *tabBarButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        tabBarButton.translatesAutoresizingMaskIntoConstraints = NO;
-        [self.contentView addSubview:tabBarButton];
-        [tabBarButton addTarget:self action:@selector(didClicked:) forControlEvents:UIControlEventTouchUpInside];
-        tabBarButton.adjustsImageWhenHighlighted = NO;
-//        [tabBarButton.imageView setContentMode:UIViewContentModeScaleAspectFit];
-        [tabBarButton.bottomAnchor constraintEqualToAnchor:self.contentView.bottomAnchor].active = YES;
-        [tabBarButton.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor constant:itemWidth*i].active = YES;
-        [tabBarButton.widthAnchor constraintEqualToConstant:itemWidth].active = YES;
-        [tabBarButton.heightAnchor constraintGreaterThanOrEqualToConstant:49].active = YES;
-        
-//        tabBarButton.frame = CGRectMake(ContentEdgeLeft + i*ItemSpacing + i*itemWidth, 0, itemWidth, 49);
-        [tabBarButton setAttributedTitle:[[NSAttributedString alloc] initWithString:tabBarItemsArray[i] attributes:@{NSFontAttributeName:_font, NSForegroundColorAttributeName:_normalColor}] forState:UIControlStateNormal];
-        [tabBarButton setAttributedTitle:[[NSAttributedString alloc] initWithString:tabBarItemsArray[i] attributes:@{NSFontAttributeName:_selectedFont, NSForegroundColorAttributeName:_selectetColor}] forState:UIControlStateSelected];
-        
-        if (self.tabBarItemsImageArray.count > 0 && i < self.tabBarItemsImageArray.count && [self.tabBarItemsImageArray[i] length] > 0) {
-            [tabBarButton setImage:[UIImage imageNamed:self.tabBarItemsImageArray[i]] forState:UIControlStateNormal];
+- (void)refreshTabBarItems {
+    for (int i = 0; i < self.tabBarItems.count && i < self.tabBarItemConfigArray.count; i++) {
+        UIButton *tabBarButton = self.tabBarItems[i];
+        NSDictionary *data = self.tabBarItemConfigArray[i];
+        if ([[data objectForKey:LLTabBarItemTitleNormalKey] isKindOfClass:[NSString class]] && [[data objectForKey:LLTabBarItemTitleNormalKey] length] > 0) {
+            [tabBarButton setAttributedTitle:[[NSAttributedString alloc] initWithString:data[LLTabBarItemTitleNormalKey] attributes:@{NSFontAttributeName:_font, NSForegroundColorAttributeName:_normalColor}] forState:UIControlStateNormal];
+        }else {
+            [tabBarButton setAttributedTitle:nil forState:UIControlStateNormal];
         }
-        if (self.tabBarItemsImageSelectedArray.count > 0 && i < self.tabBarItemsImageSelectedArray.count && [self.tabBarItemsImageSelectedArray[i] length] > 0) {
-            [tabBarButton setImage:[UIImage imageNamed:self.tabBarItemsImageSelectedArray[i]] forState:UIControlStateSelected];
+        if ([[data objectForKey:LLTabBarItemTitleSelectKey] isKindOfClass:[NSString class]] && [[data objectForKey:LLTabBarItemTitleSelectKey] length] > 0) {
+            [tabBarButton setAttributedTitle:[[NSAttributedString alloc] initWithString:data[LLTabBarItemTitleSelectKey] attributes:@{NSFontAttributeName:_selectedFont, NSForegroundColorAttributeName:_selectetColor}] forState:UIControlStateSelected];
+        }else {
+            [tabBarButton setAttributedTitle:nil forState:UIControlStateSelected];
+        }
+        
+        if ([[data objectForKey:LLTabBarItemImageNormalKey] isKindOfClass:[NSString class]]) {
+            [tabBarButton setImage:[UIImage imageNamed:data[LLTabBarItemImageNormalKey]] forState:UIControlStateNormal];
+        }else {
+            [tabBarButton setImage:nil forState:UIControlStateNormal];
+        }
+        if ([[data objectForKey:LLTabBarItemImageSelectKey] isKindOfClass:[NSString class]]) {
+            [tabBarButton setImage:[UIImage imageNamed:data[LLTabBarItemImageSelectKey]] forState:UIControlStateSelected];
+        }else {
+            [tabBarButton setImage:nil forState:UIControlStateSelected];
         }
         [tabBarButton layoutButtonWithButtonStyle:ButtonStyleImageTopTitleBottom imageTitleSpace:ImageTitleSpacing];
-        [self.tabBarItems addObject:tabBarButton];
-//        secondItem = tabBarButton;
-    }
-    _lastSelectedItem = self.tabBarItems.firstObject;
-    _lastSelectedItem.selected = YES;
-}
-
-- (void)setTabBarItemsImage {
-    for (UIButton *item in _tabBarItems) {
-        NSInteger index = [_tabBarItems indexOfObject:item];
-        if (_tabBarItemsImageArray.count > 0 && index < _tabBarItemsImageArray.count && [_tabBarItemsImageArray[index] length] > 0) {
-            [item setImage:[UIImage imageNamed:_tabBarItemsImageArray[index]] forState:UIControlStateNormal];
-            [item layoutButtonWithButtonStyle:ButtonStyleImageTopTitleBottom imageTitleSpace:ImageTitleSpacing];
-        }
-    }
-}
-
-- (void)setTabBarItemsSelectedImage {
-    for (UIButton *item in _tabBarItems) {
-        NSInteger index = [_tabBarItems indexOfObject:item];
-        if (_tabBarItemsImageSelectedArray.count > 0 && index < _tabBarItemsImageSelectedArray.count && [_tabBarItemsImageSelectedArray[index] length] > 0) {
-            
-            [item setImage:[UIImage imageNamed:_tabBarItemsImageSelectedArray[index]] forState:UIControlStateSelected];
-            [item layoutButtonWithButtonStyle:ButtonStyleImageTopTitleBottom imageTitleSpace:ImageTitleSpacing];
-        }
-    }
-}
-
-- (void)resetTitleTextApperance {
-    for (UIButton *item in _tabBarItems) {
-        if (item.titleLabel.text.length > 0) {
-            [item setAttributedTitle:[[NSAttributedString alloc] initWithString:item.titleLabel.text attributes:@{NSFontAttributeName:_font, NSForegroundColorAttributeName:_normalColor}] forState:UIControlStateNormal];
-            [item setAttributedTitle:[[NSAttributedString alloc] initWithString:item.titleLabel.text attributes:@{NSFontAttributeName:_selectedFont, NSForegroundColorAttributeName:_selectetColor}] forState:UIControlStateSelected];
-        }
     }
 }
 
@@ -292,16 +307,6 @@
         }
         
     }
-}
-
-- (void)removeSubItems {
-    for (UIView *subview in self.contentView.subviews) {
-        if ([subview isKindOfClass:[UIButton class]]) {
-            [subview removeFromSuperview];
-        }
-    }
-    _lastSelectedItem = nil;
-    [_tabBarItems removeAllObjects];
 }
 
 - (void)setItemBadgeValue:(NSUInteger)value atIndex:(NSUInteger)index {
@@ -381,16 +386,6 @@
     }
     return nil;
 }
-
-@end
-
-
-#pragma mark -- UIButton (LayoutItem)
-@interface UIButton ()
-@property (nonatomic, strong)UILabel *badgeLabel;
-@property (nonatomic, strong)UILabel *boringBadge;
-
-@property (nonatomic, strong)NSLayoutConstraint *badgeLabel_width;
 
 @end
 
@@ -592,5 +587,22 @@
 
 }
 
+- (void)setWidthConstraint:(NSLayoutConstraint *)widthConstraint {
+    objc_setAssociatedObject(self, @selector(widthConstraint), widthConstraint, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 
+}
+
+- (NSLayoutConstraint *)widthConstraint {
+    return objc_getAssociatedObject(self, @selector(widthConstraint));
+
+}
+
+- (void)setLeadingConstraint:(NSLayoutConstraint *)leadingConstraint {
+    objc_setAssociatedObject(self, @selector(leadingConstraint), leadingConstraint, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+
+}
+- (NSLayoutConstraint *)leadingConstraint {
+    return objc_getAssociatedObject(self, @selector(leadingConstraint));
+
+}
 @end

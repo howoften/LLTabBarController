@@ -7,6 +7,8 @@
 //
 
 #import <objc/runtime.h>
+#import "LLTabBar.h"
+
 #import "UITabBar+Apperance.h"
 #import "UITabBar+BeyondClick.h"
 
@@ -44,6 +46,10 @@
     
 }
 
+- (void)setContentTabBar:(LLTabBar *)contentTabBar {
+    objc_setAssociatedObject(self, @selector(contentTabBar), contentTabBar, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
 - (void)setFrame:(CGRect)frame {
     if (frame.size.width == 0) {
         return;
@@ -61,22 +67,19 @@
     [super setFrame:frame];
 }
 
-- (void)setContentTabBar:(LLTabBar *)contentTabBar {
-    objc_setAssociatedObject(self, @selector(contentTabBar), contentTabBar, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
 
-- (void)setTabBarHeight:(CGFloat)tabBarHeight {
-    objc_setAssociatedObject(self, @selector(tabBarHeight), @(tabBarHeight), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    if (self.contentTabBar) {
-        CGRect rect = self.contentTabBar.frame;
-        rect.origin.y-=(tabBarHeight-rect.size.height);
-        rect.size.height = tabBarHeight;
-        self.contentTabBar.frame = rect;
-    }
-}
-- (CGFloat)tabBarHeight {
-    return [objc_getAssociatedObject(self, @selector(tabBarHeight)) floatValue];
-}
+//- (void)setTabBarHeight:(CGFloat)tabBarHeight {
+//    objc_setAssociatedObject(self, @selector(tabBarHeight), @(tabBarHeight), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+//    if (self.contentTabBar) {
+//        CGRect rect = self.contentTabBar.frame;
+//        rect.origin.y-=(tabBarHeight-rect.size.height);
+//        rect.size.height = tabBarHeight;
+//        self.contentTabBar.frame = rect;
+//    }
+//}
+//- (CGFloat)tabBarHeight {
+//    return [objc_getAssociatedObject(self, @selector(tabBarHeight)) floatValue];
+//}
 
 - (void)setShowTabBarShadow:(BOOL)showTabBarShadow {
     objc_setAssociatedObject(self, @selector(showTabBarShadow), @(showTabBarShadow), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
@@ -108,28 +111,12 @@
 
 }
 
-- (void)setTabBarItemTitlesArray:(NSArray<NSString *> *)tabBarItemTitlesArray {
-    self.contentTabBar.tabBarItemTitlesArray = tabBarItemTitlesArray;
+- (void)setTabBarItemConfigArray:(NSArray<NSDictionary *> *)tabBarItemConfigArray {
+    self.contentTabBar.tabBarItemConfigArray = tabBarItemConfigArray;
 }
 
-- (NSArray<NSString *> *)tabBarItemTitlesArray {
-    return self.contentTabBar.tabBarItemTitlesArray;
-}
-
-- (void)setTabBarItemsImageArray:(NSArray<NSString *> *)tabBarItemsImageArray {
-    self.contentTabBar.tabBarItemsImageArray = tabBarItemsImageArray;
-}
-
-- (NSArray<NSString *> *)tabBarItemsImageArray {
-    return self.contentTabBar.tabBarItemsImageArray;
-}
-
-- (void)setTabBarItemsImageSelectedArray:(NSArray<NSString *> *)tabBarItemsImageSelectedArray {
-    self.contentTabBar.tabBarItemsImageSelectedArray = tabBarItemsImageSelectedArray;
-}
-
-- (NSArray<NSString *> *)tabBarItemsImageSelectedArray {
-    return self.contentTabBar.tabBarItemsImageSelectedArray;
+- (NSArray<NSDictionary *> *)tabBarItemConfigArray {
+    return self.contentTabBar.tabBarItemConfigArray;
 }
 
 - (void)setSeparatorPath:(UIBezierPath *)separatorPath {

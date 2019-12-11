@@ -7,15 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "LLTabBar.h"
+#import "LLTabBarController-Protocol.h"
+
 @interface UITabBar (Apperance)
-@property (nonatomic, strong)NSArray<NSString *> *tabBarItemTitlesArray; //item 标题
-@property (nonatomic, strong)NSArray<NSString *> *tabBarItemsImageArray;
-@property (nonatomic, strong)NSArray<NSString *> *tabBarItemsImageSelectedArray;
+@property (nonatomic, strong)NSArray<NSDictionary *> *tabBarItemConfigArray;
+
 @property (nonatomic, strong)UIImage *barBackgroundImage;
 @property (nonatomic, strong)UIColor *barBackgroundColor;
 
-@property (nonatomic, assign)CGFloat tabBarHeight;
+//@property (nonatomic, assign)CGFloat tabBarHeight;
 //@property (nonatomic, assign)CGFloat tabBarOffset;
 @property (nonatomic, assign)BOOL showTabBarShadow;
 @property (nonatomic, strong)UIBezierPath *separatorPath;

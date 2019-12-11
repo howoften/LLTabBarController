@@ -50,6 +50,7 @@
 		2D16D843239CED5300181484 /* ThViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ThViewController.m; sourceTree = "<group>"; };
 		2D16D845239CED6000181484 /* FViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FViewController.h; sourceTree = "<group>"; };
 		2D16D846239CED6000181484 /* FViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FViewController.m; sourceTree = "<group>"; };
+		2D86375B239E8C1D002D4FA3 /* LLTabBarController-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LLTabBarController-Protocol.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +108,7 @@
 		2D16D841239CC7C600181484 /* customlize */ = {
 			isa = PBXGroup;
 			children = (
+				2D86375B239E8C1D002D4FA3 /* LLTabBarController-Protocol.h */,
 				2D16D829239A316C00181484 /* LLTabBar.h */,
 				2D16D82A239A316C00181484 /* LLTabBar.m */,
 				2D16D828239A316C00181484 /* UITabBar+BeyondClick.h */,

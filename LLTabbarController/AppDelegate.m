@@ -17,11 +17,21 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    
-    [(LLTabBarController *)self.window.rootViewController tabBar].tabBarItemTitlesArray = @[@"首页", @"播放", @"我的"];
-    
-    [(LLTabBarController *)self.window.rootViewController tabBar].tabBarItemsImageArray = @[@"tab_home01", @"bofang", @"tab_mine_01"];
-    [(LLTabBarController *)self.window.rootViewController tabBar].tabBarItemsImageSelectedArray = @[@"tab_home", @"bofang", @"tab_mine"];
+    [(LLTabBarController *)self.window.rootViewController tabBar].tabBarItemConfigArray = @[
+        @{LLTabBarItemTitleNormalKey:@"首页",
+          LLTabBarItemTitleSelectKey:@"",
+          LLTabBarItemImageNormalKey:@"tab_home01",
+          LLTabBarItemImageSelectKey:@"tab_home"
+        },
+        @{LLTabBarItemImageNormalKey:@"bofang",
+        },
+        @{LLTabBarItemTitleNormalKey:@"我的",
+          LLTabBarItemTitleSelectKey:@"我的",
+          LLTabBarItemImageNormalKey:@"tab_mine_01",
+          LLTabBarItemImageSelectKey:@"tab_mine"
+        }
+    ];
+   
     
     [[(LLTabBarController *)self.window.rootViewController tabBar] setTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]} state:UIControlStateSelected];
     
@@ -42,7 +52,7 @@
     [[(LLTabBarController *)self.window.rootViewController tabBar] setItemBadgeValue:0 atIndex:2];
     
 
-    [[(LLTabBarController *)self.window.rootViewController tabBar] moveItemBadgeAtIndex:1 offset:UIOffsetMake(-20, 10)];
+//    [[(LLTabBarController *)self.window.rootViewController tabBar] moveItemBadgeAtIndex:1 offset:UIOffsetMake(-20, 10)];
     return YES;
 }
 
