@@ -7,7 +7,7 @@
 //  Copyright © 2017年 Liu Jiang. All rights reserved.
 //
 
-#import <objc/runtime.h>
+#import "LLTabBarItem.h"
 #import "LLTabBar.h"
 #define ScreenWidth [UIScreen mainScreen].bounds.size.width
 #define ScreenHeight [UIScreen mainScreen].bounds.size.height
@@ -20,7 +20,7 @@
 @property (nonatomic, strong)UIFont *selectedFont;
 @property (nonatomic, strong)UIColor *normalColor;
 @property (nonatomic, strong)UIColor *selectetColor;
-@property (nonatomic, strong)UIButton *lastSelectedItem;
+@property (nonatomic, strong)LLTabBarItem *lastSelectedItem;
 @property (nonatomic, strong)UIImageView *bgImageView;
 @property (nonatomic, strong)NSMutableArray *tabBarItems;///存 button
 @property (nonatomic, strong)NSMutableDictionary *offsetDic;
@@ -28,17 +28,6 @@
 @property (nonatomic, strong)UIView *contentView;
 @property (nonatomic, strong)UIVisualEffectView *backMaskView;
 @property (nonatomic, strong)CAShapeLayer *separateLine;
-
-@end
-#pragma mark -- UIButton (LayoutItem)
-@interface UIButton ()
-@property (nonatomic, strong)UILabel *badgeLabel;
-@property (nonatomic, strong)UILabel *boringBadge;
-
-@property (nonatomic, strong)NSLayoutConstraint *widthConstraint;
-@property (nonatomic, strong)NSLayoutConstraint *leadingConstraint;
-
-@property (nonatomic, strong)NSLayoutConstraint *badgeLabel_width;
 
 @end
 
@@ -176,10 +165,6 @@ NSString * const LLTabBarItemImageSelectKey = @"LLTabBarItemImageSelectKey";
     [self refreshTabBarItems];
 }
 
-- (void)setLastSelectedItem:(UIButton *)lastSelectedItem {
-    _lastSelectedItem = lastSelectedItem;
-}
-
 //bar 背景色
 
 - (void)setBackgroundColor:(UIColor *)backgroundColor {
@@ -223,7 +208,7 @@ NSString * const LLTabBarItemImageSelectKey = @"LLTabBarItemImageSelectKey";
         NSMutableArray *temp = [self.tabBarItems mutableCopy];
         CGFloat itemWidth = (ScreenWidth) / MIN(5, self.tabBarItemConfigArray.count);
         for (int i = 0; i < self.tabBarItemConfigArray.count; i++) {
-            UIButton *previous_item = self.tabBarItems[i];
+            LLTabBarItem *previous_item = self.tabBarItems[i];
             previous_item.leadingConstraint.constant = itemWidth*i;
             previous_item.widthConstraint.constant = itemWidth;
         }
@@ -237,16 +222,15 @@ NSString * const LLTabBarItemImageSelectKey = @"LLTabBarItemImageSelectKey";
         CGFloat itemWidth = (ScreenWidth) / MIN(5, self.tabBarItemConfigArray.count);
         NSMutableArray *temp = [self.tabBarItems mutableCopy];
         for (int i = 0; i < self.tabBarItems.count; i++) {
-            UIButton *previous_item = self.tabBarItems[i];
+            LLTabBarItem *previous_item = self.tabBarItems[i];
             previous_item.leadingConstraint.constant = itemWidth*i;
             previous_item.widthConstraint.constant = itemWidth;
         }
         for (int i = (int)self.tabBarItems.count; i < self.tabBarItemConfigArray.count; i++) {
-            UIButton *tabBarButton = [UIButton buttonWithType:UIButtonTypeCustom];
+            LLTabBarItem *tabBarButton = [[LLTabBarItem alloc] init];
             tabBarButton.translatesAutoresizingMaskIntoConstraints = NO;
             [self.contentView addSubview:tabBarButton];
-            [tabBarButton addTarget:self action:@selector(didClicked:) forControlEvents:UIControlEventTouchUpInside];
-            tabBarButton.adjustsImageWhenHighlighted = NO;
+            [tabBarButton addTarget:self action:@selector(didClicked:)];
             [tabBarButton.bottomAnchor constraintEqualToAnchor:self.contentView.bottomAnchor].active = YES;
             tabBarButton.leadingConstraint = [tabBarButton.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor constant:itemWidth*i];
             tabBarButton.leadingConstraint.active = YES;
@@ -263,7 +247,7 @@ NSString * const LLTabBarItemImageSelectKey = @"LLTabBarItemImageSelectKey";
 
 - (void)refreshTabBarItems {
     for (int i = 0; i < self.tabBarItems.count && i < self.tabBarItemConfigArray.count; i++) {
-        UIButton *tabBarButton = self.tabBarItems[i];
+        LLTabBarItem *tabBarButton = self.tabBarItems[i];
         NSDictionary *data = self.tabBarItemConfigArray[i];
         if ([[data objectForKey:LLTabBarItemTitleNormalKey] isKindOfClass:[NSString class]] && [[data objectForKey:LLTabBarItemTitleNormalKey] length] > 0) {
             [tabBarButton setAttributedTitle:[[NSAttributedString alloc] initWithString:data[LLTabBarItemTitleNormalKey] attributes:@{NSFontAttributeName:_font, NSForegroundColorAttributeName:_normalColor}] forState:UIControlStateNormal];
@@ -286,11 +270,10 @@ NSString * const LLTabBarItemImageSelectKey = @"LLTabBarItemImageSelectKey";
         }else {
             [tabBarButton setImage:nil forState:UIControlStateSelected];
         }
-        [tabBarButton layoutButtonWithButtonStyle:ButtonStyleImageTopTitleBottom imageTitleSpace:ImageTitleSpacing];
     }
 }
 
-- (void)didClicked:(UIButton *)sender {
+- (void)didClicked:(LLTabBarItem *)sender {
     BOOL enabled = YES;
     NSInteger selectedIndex = [_tabBarItems indexOfObject:sender];
     if ([self.delegete respondsToSelector:@selector(tabBar:shouldSelectItemAtIndex:)]) {
@@ -311,24 +294,24 @@ NSString * const LLTabBarItemImageSelectKey = @"LLTabBarItemImageSelectKey";
 
 - (void)setItemBadgeValue:(NSUInteger)value atIndex:(NSUInteger)index {
     if (index >= 0 && index < self.tabBarItems.count) {
-        UIButton *target = [self.tabBarItems objectAtIndex:index];
+        LLTabBarItem *target = [self.tabBarItems objectAtIndex:index];
         [target setBadgeValue:value];
     }
 }
 - (void)moveItemBadgeAtIndex:(NSUInteger)index offset:(UIOffset)offset {
     if (index >= 0 && index < self.tabBarItems.count) {
-        UIButton *target = [self.tabBarItems objectAtIndex:index];
+        LLTabBarItem *target = [self.tabBarItems objectAtIndex:index];
         [target setBadgeOffset:offset];
     }
 }
 - (void)setItemPersistWhenBadgeValueZero:(BOOL)isPersist atIndex:(NSUInteger)index {
     if (index >= 0 && index < self.tabBarItems.count) {
-        UIButton *target = [self.tabBarItems objectAtIndex:index];
+        LLTabBarItem *target = [self.tabBarItems objectAtIndex:index];
         [target setPersistWhenZero:isPersist];
     }
 }
 - (void)persistAllItemWhenBadgeValueZero:(BOOL)isPersist {
-    for (UIButton *item in  self.tabBarItems) {
+    for (LLTabBarItem *item in  self.tabBarItems) {
         [item setPersistWhenZero:isPersist];
     }
 }
@@ -387,222 +370,4 @@ NSString * const LLTabBarItemImageSelectKey = @"LLTabBarItemImageSelectKey";
     return nil;
 }
 
-@end
-
-@implementation UIButton (LayoutItem)
-- (void)layoutButtonWithButtonStyle:(ButtonStyle)style imageTitleSpace:(CGFloat)space {
-    /**
-     * 知识点：titleEdgeInsets是title相对于其上下左右的inset，跟tableView的contentInset是类似的，
-     * 如果只有title，那它上下左右都是相对于button的，image也是一样；
-     * 如果同时有image和label，那这时候image的上左下是相对于button，右边是相对于label的；title的上右下是相对于button，左边是相对于image的。
-     */
-    
-    // 1. 得到imageView和titleLabel的宽、高
-    CGFloat imageWith = self.imageView.frame.size.width;
-    CGFloat imageHeight = self.imageView.frame.size.height;
-    
-    CGFloat labelWidth = 0.0;
-    CGFloat labelHeight = 0.0;
-    if ([UIDevice currentDevice].systemVersion.floatValue >= 8.0) {
-        // 由于iOS8中titleLabel的size为0，用下面的这种设置
-        labelWidth = self.titleLabel.intrinsicContentSize.width;
-        labelHeight = self.titleLabel.intrinsicContentSize.height;
-    } else {
-        labelWidth = self.titleLabel.frame.size.width;
-        labelHeight = self.titleLabel.frame.size.height;
-    }
-    if (self.titleLabel.text.length <= 0) {
-        labelWidth = 0.f;
-        labelHeight = 0.f;
-    }
-    // 2. 声明全局的imageEdgeInsets和labelEdgeInsets
-    UIEdgeInsets imageEdgeInsets = UIEdgeInsetsZero;
-    UIEdgeInsets labelEdgeInsets = UIEdgeInsetsZero;
-    
-    // 3. 根据style和space得到imageEdgeInsets和labelEdgeInsets的值
-       switch (style) {
-        case ButtonStyleImageTopTitleBottom:
-        {
-            imageEdgeInsets = UIEdgeInsetsMake(-labelHeight-space/2.0, 0, 0, -labelWidth);
-            labelEdgeInsets = UIEdgeInsetsMake(0, -imageWith, -imageHeight-space/2.0, 0);
-        }
-            break;
-        case ButtonStyleImageLeftTitleRight:
-        {
-            imageEdgeInsets = UIEdgeInsetsMake(0, -space/2.0, 0, space/2.0);
-            labelEdgeInsets = UIEdgeInsetsMake(0, space/2.0, 0, -space/2.0);
-        }
-            break;
-        case ButtonStyleImageBottomTitleTop:
-        {
-            imageEdgeInsets = UIEdgeInsetsMake(0, 0, -labelHeight-space/2.0, -labelWidth);
-            labelEdgeInsets = UIEdgeInsetsMake(-imageHeight-space/2.0, -imageWith, 0, 0);
-        }
-            break;
-        case ButtonStyleImageRightTitleLeft:
-        {
-            imageEdgeInsets = UIEdgeInsetsMake(0, labelWidth+space/2.0, 0, -labelWidth-space/2.0);
-            labelEdgeInsets = UIEdgeInsetsMake(0, -imageWith-space/2.0, 0, imageWith+space/2.0);
-        }
-            break;
-        default:
-            break;
-    }
-    
-    // 4. 赋值
-    self.titleEdgeInsets = labelEdgeInsets;
-    self.imageEdgeInsets = imageEdgeInsets;
-    
-    if (CGRectGetMaxY(self.titleLabel.frame) > CGRectGetHeight(self.frame)) {
-        CGFloat offset_v = CGRectGetMaxY(self.titleLabel.frame) - CGRectGetHeight(self.frame);
-        offset_v*=2;
-        if (style == ButtonStyleImageTopTitleBottom) {
-            labelEdgeInsets.bottom += offset_v;
-            self.titleEdgeInsets = labelEdgeInsets;
-
-            imageEdgeInsets.top -= offset_v;
-            self.imageEdgeInsets = imageEdgeInsets;
-        }
-    }
-}
-
-- (void)setPersistWhenZero:(BOOL)persistWhenZero {
-    if (persistWhenZero != self.persistWhenZero) {
-        objc_setAssociatedObject(self, @selector(persistWhenZero), @(persistWhenZero), OBJC_ASSOCIATION_ASSIGN);
-    }
-}
-
-- (BOOL)persistWhenZero {
-    return [objc_getAssociatedObject(self, @selector(persistWhenZero)) boolValue];
-}
-
-
-- (NSUInteger)badgeValue {
-    return [objc_getAssociatedObject(self, @selector(badgeValue)) unsignedIntegerValue];
-
-}
-
-- (void)setBadgeValue:(NSUInteger)badgeValue {
-    if (badgeValue != self.badgeValue || badgeValue == 0) {
-        objc_setAssociatedObject(self, @selector(badgeValue), @(badgeValue), OBJC_ASSOCIATION_ASSIGN);
-        NSString *strValue = [NSString stringWithFormat:@"%lu", badgeValue];
-        if (badgeValue > 99) {
-            strValue = @"99+";
-        }else if (badgeValue == 0) {
-            strValue =nil;
-        }
-        self.boringBadge.hidden = !(badgeValue == 0 && self.persistWhenZero);
-        self.badgeLabel.hidden = badgeValue == 0;
-        [self.badgeLabel setText:strValue];
-    
-        if (badgeValue < 10) {
-            self.badgeLabel_width.constant = 19;
-        }else {
-            self.badgeLabel_width.constant = [self stringWidthFromLabel:self.badgeLabel]+10;
-        }
-    }
-
-}
-- (void)setBadgeOffset:(UIOffset)badgeOffset {
-    objc_setAssociatedObject(self, @selector(badgeOffset), [NSValue valueWithUIOffset:badgeOffset], OBJC_ASSOCIATION_ASSIGN);
-    
-    CGAffineTransform transform = CGAffineTransformMakeTranslation(badgeOffset.horizontal, badgeOffset.vertical);
-    self.badgeLabel.transform = transform;
-}
-
-- (UIOffset)badgeOffset {
-    return [objc_getAssociatedObject(self, @selector(badgeOffset)) UIOffsetValue];
-}
-
-- (UILabel *)badgeLabel {
-    UILabel  *label = objc_getAssociatedObject(self, @selector(badgeLabel));
-    if (!label) {
-        label = [[UILabel alloc] init];
-        label.translatesAutoresizingMaskIntoConstraints = NO;
-        [self addSubview:label];
-        label.backgroundColor = [UIColor colorWithRed:249/255.f green:64/255.f blue:57/255.f alpha:1];
-        label.textColor = [UIColor whiteColor];
-        label.font = [UIFont systemFontOfSize:13];
-        label.textAlignment = NSTextAlignmentCenter;
-        label.layer.cornerRadius = 19/2.0;
-        label.layer.masksToBounds = YES;
-        if (UIOffsetEqualToOffset(self.badgeOffset, UIOffsetZero)) {
-//            NSLayoutConstraint *leading = [NSLayoutConstraint constraintWithItem:label attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.imageView attribute:NSLayoutAttributeTrailing multiplier:1 constant:-7];
-//            NSLayoutConstraint *bottom = [NSLayoutConstraint constraintWithItem:label attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.imageView attribute:NSLayoutAttributeTop multiplier:1 constant:7];
-//            [label addConstraints:@[leading, bottom]];
-            
-            [label.leadingAnchor constraintEqualToAnchor:self.imageView.trailingAnchor constant:-7].active = YES;
-            [label.topAnchor constraintEqualToAnchor:self.imageView.topAnchor constant:0].active = YES;
-        }else {
-            [label.leadingAnchor constraintEqualToAnchor:self.imageView.trailingAnchor constant:self.badgeOffset.horizontal].active = YES;
-            [label.topAnchor constraintEqualToAnchor:self.imageView.topAnchor constant:self.badgeOffset.vertical].active = YES;
-        }
-        [label.heightAnchor constraintEqualToConstant:19].active = YES;
-        self.badgeLabel_width = [label.widthAnchor constraintEqualToConstant:19];
-        self.badgeLabel_width.active = YES;
-        [self setBadgeLabel:label];
-    }
-    return label;
-}
-
-- (void)setBadgeLabel:(UILabel *)badgeLabel {
-    objc_setAssociatedObject(self, @selector(badgeLabel), badgeLabel, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-
-}
-
-- (CGFloat)stringWidthFromLabel:(UILabel *)label {
-    return MAX([label.text boundingRectWithSize:CGSizeMake(100, 30) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:@{NSFontAttributeName:label.font} context:nil].size.width, 19);
-}
-
-- (void)setBadgeLabel_width:(NSLayoutConstraint *)badgeLabel_width {
-    objc_setAssociatedObject(self, @selector(badgeLabel_width), badgeLabel_width, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-
-}
-
-- (NSLayoutConstraint *)badgeLabel_width {
-    return objc_getAssociatedObject(self, @selector(badgeLabel_width));
-}
-
-- (UILabel *)boringBadge {
-    UILabel *b = objc_getAssociatedObject(self, @selector(boringBadge));
-    if (!b) {
-        b = [UILabel new];
-        b.translatesAutoresizingMaskIntoConstraints = NO;
-        [self addSubview:b];
-        [b.leadingAnchor constraintEqualToAnchor:self.badgeLabel.leadingAnchor].active = YES;
-        [b.topAnchor constraintEqualToAnchor:self.badgeLabel.topAnchor constant:5].active = YES;
-        [b.widthAnchor constraintEqualToConstant:6].active = YES;
-        [b.heightAnchor constraintEqualToConstant:6].active = YES;
-        b.layer.cornerRadius = 3;
-        b.layer.masksToBounds = YES;
-        b.backgroundColor = self.badgeLabel.backgroundColor;
-        b.hidden = YES;
-        [self setBoringBadge:b];
-    }
-    return b;
-}
-
-- (void)setBoringBadge:(UILabel *)boringBadge {
-    objc_setAssociatedObject(self, @selector(boringBadge), boringBadge, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-
-}
-
-- (void)setWidthConstraint:(NSLayoutConstraint *)widthConstraint {
-    objc_setAssociatedObject(self, @selector(widthConstraint), widthConstraint, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-
-}
-
-- (NSLayoutConstraint *)widthConstraint {
-    return objc_getAssociatedObject(self, @selector(widthConstraint));
-
-}
-
-- (void)setLeadingConstraint:(NSLayoutConstraint *)leadingConstraint {
-    objc_setAssociatedObject(self, @selector(leadingConstraint), leadingConstraint, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-
-}
-- (NSLayoutConstraint *)leadingConstraint {
-    return objc_getAssociatedObject(self, @selector(leadingConstraint));
-
-}
 @end

@@ -21,6 +21,8 @@
 		2D16D840239CC15C00181484 /* TViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D16D83F239CC15C00181484 /* TViewController.m */; };
 		2D16D844239CED5300181484 /* ThViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D16D843239CED5300181484 /* ThViewController.m */; };
 		2D16D847239CED6000181484 /* FViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D16D846239CED6000181484 /* FViewController.m */; };
+		2D1F996C23A383D50085061F /* LLTabBarItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2D1F996B23A383D50085061F /* LLTabBarItem.xib */; };
+		2D1F996F23A38AD90085061F /* LLTabBarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D1F996E23A38AD90085061F /* LLTabBarItem.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +52,9 @@
 		2D16D843239CED5300181484 /* ThViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ThViewController.m; sourceTree = "<group>"; };
 		2D16D845239CED6000181484 /* FViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FViewController.h; sourceTree = "<group>"; };
 		2D16D846239CED6000181484 /* FViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FViewController.m; sourceTree = "<group>"; };
+		2D1F996B23A383D50085061F /* LLTabBarItem.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LLTabBarItem.xib; sourceTree = "<group>"; };
+		2D1F996D23A38AD90085061F /* LLTabBarItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LLTabBarItem.h; sourceTree = "<group>"; };
+		2D1F996E23A38AD90085061F /* LLTabBarItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LLTabBarItem.m; sourceTree = "<group>"; };
 		2D86375B239E8C1D002D4FA3 /* LLTabBarController-Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LLTabBarController-Protocol.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -111,6 +116,9 @@
 				2D86375B239E8C1D002D4FA3 /* LLTabBarController-Protocol.h */,
 				2D16D829239A316C00181484 /* LLTabBar.h */,
 				2D16D82A239A316C00181484 /* LLTabBar.m */,
+				2D1F996D23A38AD90085061F /* LLTabBarItem.h */,
+				2D1F996E23A38AD90085061F /* LLTabBarItem.m */,
+				2D1F996B23A383D50085061F /* LLTabBarItem.xib */,
 				2D16D828239A316C00181484 /* UITabBar+BeyondClick.h */,
 				2D16D82C239A316C00181484 /* UITabBar+BeyondClick.m */,
 				2D16D830239A33FB00181484 /* UITabBar+Apperance.h */,
@@ -178,6 +186,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2D1F996C23A383D50085061F /* LLTabBarItem.xib in Resources */,
 				2D16D81E239A310700181484 /* LaunchScreen.storyboard in Resources */,
 				2D16D81B239A310700181484 /* Assets.xcassets in Resources */,
 				2D16D819239A310500181484 /* Main.storyboard in Resources */,
@@ -195,6 +204,7 @@
 				2D16D82E239A316C00181484 /* LLTabBar.m in Sources */,
 				2D16D83B239A3A2F00181484 /* SViewController.m in Sources */,
 				2D16D816239A310500181484 /* ViewController.m in Sources */,
+				2D1F996F23A38AD90085061F /* LLTabBarItem.m in Sources */,
 				2D16D810239A310500181484 /* AppDelegate.m in Sources */,
 				2D16D83D239B34D600181484 /* UITabBar+Apperance.m in Sources */,
 				2D16D847239CED6000181484 /* FViewController.m in Sources */,

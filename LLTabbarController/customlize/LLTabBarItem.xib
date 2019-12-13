@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="LLTabBarItem">
+            <rect key="frame" x="0.0" y="0.0" width="126" height="44"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CeT-7H-Xjp">
+                    <rect key="frame" x="0.0" y="0.0" width="126" height="44"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" tag="332" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="hom" translatesAutoresizingMaskIntoConstraints="NO" id="EZU-Gp-uzH">
+                            <rect key="frame" x="47" y="0.0" width="32" height="32"/>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" tag="333" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Item" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hCI-F6-uAi">
+                            <rect key="frame" x="52.5" y="32" width="21.5" height="12"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="EZU-Gp-uzH" secondAttribute="trailing" id="15K-QD-hQy"/>
+                        <constraint firstAttribute="bottom" secondItem="hCI-F6-uAi" secondAttribute="bottom" id="JBl-EJ-VUq"/>
+                        <constraint firstItem="EZU-Gp-uzH" firstAttribute="top" secondItem="CeT-7H-Xjp" secondAttribute="top" id="Jou-pd-rHo"/>
+                        <constraint firstItem="hCI-F6-uAi" firstAttribute="top" secondItem="EZU-Gp-uzH" secondAttribute="bottom" id="PFv-yk-KDX"/>
+                        <constraint firstItem="hCI-F6-uAi" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="CeT-7H-Xjp" secondAttribute="leading" id="Q8A-bU-Znd"/>
+                        <constraint firstItem="EZU-Gp-uzH" firstAttribute="centerX" secondItem="CeT-7H-Xjp" secondAttribute="centerX" id="VzK-2r-T0O"/>
+                        <constraint firstItem="EZU-Gp-uzH" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="CeT-7H-Xjp" secondAttribute="leading" id="Zch-oD-QoF"/>
+                        <constraint firstItem="hCI-F6-uAi" firstAttribute="centerX" secondItem="CeT-7H-Xjp" secondAttribute="centerX" id="eUj-RQ-aNm"/>
+                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="hCI-F6-uAi" secondAttribute="trailing" id="vlr-VX-7LF"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="CeT-7H-Xjp" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="1fP-3O-jy4"/>
+                <constraint firstAttribute="trailing" secondItem="CeT-7H-Xjp" secondAttribute="trailing" id="8aa-RN-xO1"/>
+                <constraint firstItem="CeT-7H-Xjp" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="EaY-nE-fTp"/>
+                <constraint firstAttribute="bottom" secondItem="CeT-7H-Xjp" secondAttribute="bottom" id="GYw-0M-XBL"/>
+                <constraint firstItem="CeT-7H-Xjp" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="ZZA-6K-VzD"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="128.98550724637681" y="128.90625"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="hom" width="16" height="16"/>
+    </resources>
+</document>

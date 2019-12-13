@@ -24,6 +24,7 @@
           LLTabBarItemImageSelectKey:@"tab_home"
         },
         @{LLTabBarItemImageNormalKey:@"bofang",
+          LLTabBarItemImageSelectKey:@"bofang"
         },
         @{LLTabBarItemTitleNormalKey:@"我的",
           LLTabBarItemTitleSelectKey:@"我的",

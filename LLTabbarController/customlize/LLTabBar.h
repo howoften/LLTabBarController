@@ -33,17 +33,3 @@
 - (__kindof UIView *)subviewAtPoint:(CGPoint)point;
 @end
 
-typedef NS_ENUM(NSUInteger, ButtonStyle) {
-    ButtonStyleImageTopTitleBottom, // image在上，label在下
-    ButtonStyleImageLeftTitleRight, // image在左，label在右
-    ButtonStyleImageBottomTitleTop, // image在下，label在上
-    ButtonStyleImageRightTitleLeft // image在右，label在左
-};
-@interface UIButton (LayoutItem)
-@property (nonatomic, assign)BOOL persistWhenZero; //default is no
-@property (nonatomic, assign)NSUInteger badgeValue;
-@property (nonatomic, assign)UIOffset badgeOffset;
-
-- (void)layoutButtonWithButtonStyle:(ButtonStyle)style imageTitleSpace:(CGFloat)space;
-@end
-
