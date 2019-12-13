@@ -52,7 +52,7 @@
     [[(LLTabBarController *)self.window.rootViewController tabBar] setItemBadgeValue:0 atIndex:2];
     
 
-//    [[(LLTabBarController *)self.window.rootViewController tabBar] moveItemBadgeAtIndex:1 offset:UIOffsetMake(-20, 10)];
+    [[(LLTabBarController *)self.window.rootViewController tabBar] moveItemBadgeAtIndex:1 offset:UIOffsetMake(-20, 10)];
     return YES;
 }
 
