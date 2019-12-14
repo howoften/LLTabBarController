@@ -171,7 +171,7 @@
         }
     }else if (state == UIControlStateSelected) {
         self.attrStringSelected = title;
-        if (!self.selected) {
+        if (self.selected) {
             self.titleLabel.attributedText = title;
         }
     }

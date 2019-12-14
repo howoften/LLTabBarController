@@ -11,10 +11,7 @@
 #import "LLTabBar.h"
 #define ScreenWidth [UIScreen mainScreen].bounds.size.width
 #define ScreenHeight [UIScreen mainScreen].bounds.size.height
-//#define MaxItemNum 5
-//#define ContentEdgeLeft 2
-#define ItemSpacing 2
-#define ImageTitleSpacing 2
+
 @interface LLTabBar ()
 @property (nonatomic, strong)UIFont *font;
 @property (nonatomic, strong)UIFont *selectedFont;
@@ -113,7 +110,7 @@ NSString * const LLTabBarItemImageSelectKey = @"LLTabBarItemImageSelectKey";
         [_bgImageView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor].active = YES;
         [_bgImageView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor].active = YES;
         [_bgImageView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor].active = YES;
-
+//        [_bgImageView.heightAnchor constraintGreaterThanOrEqualToConstant:ScreenHeight>736?83:49].active = YES;
         [self sendSubviewToBack:_bgImageView];
     }
     return _bgImageView;

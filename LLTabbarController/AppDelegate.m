@@ -19,7 +19,6 @@
     // Override point for customization after application launch.
     [(LLTabBarController *)self.window.rootViewController tabBar].tabBarItemConfigArray = @[
         @{LLTabBarItemTitleNormalKey:@"首页",
-          LLTabBarItemTitleSelectKey:@"",
           LLTabBarItemImageNormalKey:@"tab_home01",
           LLTabBarItemImageSelectKey:@"tab_home"
         },
@@ -28,8 +27,6 @@
         },
         @{LLTabBarItemTitleNormalKey:@"我的",
           LLTabBarItemTitleSelectKey:@"我的",
-          LLTabBarItemImageNormalKey:@"tab_mine_01",
-          LLTabBarItemImageSelectKey:@"tab_mine"
         }
     ];
    
@@ -43,11 +40,11 @@
     [bez addLineToPoint:CGPointMake(([UIScreen mainScreen].bounds.size.width-120)/2, 0)];
     [bez addArcWithCenter:CGPointMake([UIScreen mainScreen].bounds.size.width/2, 0) radius:60 startAngle:M_PI endAngle:0 clockwise:YES];
     [bez addLineToPoint:CGPointMake([UIScreen mainScreen].bounds.size.width, 0)];
-//    [[(LLTabBarController *)self.window.rootViewController tabBar] setBarBackgroundImage:[UIImage imageNamed:@"timg"]];
+    [[(LLTabBarController *)self.window.rootViewController tabBar] setSeparatorPath:bez];
+    [[(LLTabBarController *)self.window.rootViewController tabBar] setBarBackgroundImage:[UIImage imageNamed:@"timg"]];
     [[(LLTabBarController *)self.window.rootViewController tabBar] setBarBackgroundColor:[UIColor purpleColor]];
     
     [[(LLTabBarController *)self.window.rootViewController tabBar] setItemPersistWhenBadgeValueZero:YES atIndex:2];
-    [[(LLTabBarController *)self.window.rootViewController tabBar] setSeparatorPath:bez];
     [[(LLTabBarController *)self.window.rootViewController tabBar] setItemBadgeValue:100 atIndex:1];
     [[(LLTabBarController *)self.window.rootViewController tabBar] setItemBadgeValue:9 atIndex:0];
     [[(LLTabBarController *)self.window.rootViewController tabBar] setItemBadgeValue:0 atIndex:2];
