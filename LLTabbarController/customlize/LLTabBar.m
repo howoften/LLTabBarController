@@ -19,7 +19,7 @@
 @property (nonatomic, strong)UIColor *selectetColor;
 @property (nonatomic, strong)LLTabBarItem *lastSelectedItem;
 @property (nonatomic, strong)UIImageView *bgImageView;
-@property (nonatomic, strong)NSMutableArray *tabBarItems;///存 button
+@property (nonatomic, strong)NSMutableArray *tabBarItems;///存 item
 @property (nonatomic, strong)NSMutableDictionary *offsetDic;
 
 @property (nonatomic, strong)UIView *contentView;
